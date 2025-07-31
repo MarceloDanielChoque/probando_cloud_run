@@ -6,7 +6,7 @@ from googleapiclient.discovery import build
 from google.cloud import storage
 from io import StringIO
 from datetime import datetime
-from flask import Flask
+from flask import Flask, jsonify
 import google.auth
 
 # Cargar variables de entorno
@@ -81,8 +81,12 @@ app = Flask(__name__)
 
 @app.route('/')
 def run_job():
-    main()
-    return "Ejecución completada", 200
+    try:
+        main()  # tu función principal donde haces todo el procesamiento
+        return "Ejecución completada", 200
+    except Exception as e:
+        print(f"Error en la ejecución: {e}")
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
