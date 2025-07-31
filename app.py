@@ -7,16 +7,18 @@ from google.cloud import storage
 from io import StringIO
 from datetime import datetime
 from flask import Flask
+import google.auth
 
 # Cargar variables de entorno
 load_dotenv()
 
 def main():
     try:
-        credenciales = service_account.Credentials.from_service_account_file(
-            os.getenv("GOOGLE_APPLICATION_CREDENTIALS"),
-            scopes=['https://www.googleapis.com/auth/spreadsheets']
-        )
+        # credenciales = service_account.Credentials.from_service_account_file(
+        #     os.getenv("GOOGLE_APPLICATION_CREDENTIALS"),
+        #     scopes=['https://www.googleapis.com/auth/spreadsheets']
+        # )
+        credenciales, _ = google.auth.default()
     except Exception as e:
         print(f"Error auth google: {e}")
         return  # Evita continuar si hay error
